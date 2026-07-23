@@ -18,7 +18,10 @@ export default function Register() {
     if (!form.email.trim()) { setError("Please enter your email."); return; }
     if (!form.username.trim()) { setError("Please enter a username."); return; }
     if (!form.phone_number.trim()) { setError("Please enter your phone number."); return; }
-    if (form.phone_number.length < 10) { setError("Phone number must be at least 10 digits."); return; }
+    if (!/^(07\d{8}|01\d{8}|254[17]\d{8}|\+254[17]\d{8})$/.test(form.phone_number.trim())) {
+      setError("Enter a valid Kenyan phone: 07XXXXXXXX, 01XXXXXXXX, or 2547XXXXXXXX.");
+      return;
+    }
     if (!form.password) { setError("Please enter a password."); return; }
     if (form.password.length < 8) { setError("Password must be at least 8 characters."); return; }
     try {
@@ -55,7 +58,7 @@ export default function Register() {
             <label className="text-sm font-medium text-navy-700 dark:text-navy-200">Phone number</label>
             <input required value={form.phone_number}
               onChange={(e) => update("phone_number", e.target.value)}
-              placeholder="2547XXXXXXXX"
+              placeholder="07XXXXXXXX or 2547XXXXXXXX"
               className="mt-1 w-full rounded-md border border-navy-200 dark:border-navy-600 dark:bg-navy-800 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
             <p className="text-xs text-navy-500 dark:text-navy-200 mt-1">Used for payment processing when you buy something.</p>
           </div>
