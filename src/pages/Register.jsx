@@ -29,7 +29,7 @@ export default function Register() {
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <h1 className="font-display text-2xl font-bold text-navy-700 mb-1">Create your account</h1>
-        <p className="text-navy-400 text-sm mb-6">Use your student email so buyers know you're verified.</p>
+        <p className="text-navy-400 text-sm mb-6">Use your student email so buyers know you&apos;re verified.</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
