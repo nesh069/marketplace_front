@@ -1,21 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import api from "../api/client";
 import { useAuth } from "../context/AuthContext";
-
-const STATUS_LABEL = {
-  pending: "Waiting for Mpesa confirmation...",
-  success: "Payment confirmed! This item is now yours.",
-  failed: "Payment didn't go through. You can try again.",
-};
+import { initiatePayment, saveTransaction } from "../api/payments";
 
 export default function ListingDetail() {
   const { id } = useParams();
   const { user } = useAuth();
   const [listing, setListing] = useState(null);
   const [phone, setPhone] = useState("");
-  const [transaction, setTransaction] = useState(null);
   const [paying, setPaying] = useState(false);
+  const [paymentResult, setPaymentResult] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const pollRef = useRef(null);
@@ -32,23 +27,23 @@ export default function ListingDetail() {
   async function handlePay(e) {
     e.preventDefault();
     setPaying(true);
-    const { data } = await api.post("/payments/pay/", {
-      listing_id: Number(id),
-      phone_number: phone,
-    });
-    setTransaction({ id: data.transaction_id, status: data.status });
-
-    pollRef.current = setInterval(async () => {
-      const { data: status } = await api.get(`/payments/status/${data.transaction_id}/`);
-      setTransaction(status);
-      if (status.status !== "pending") {
-        clearInterval(pollRef.current);
-        setPaying(false);
-        if (status.status === "success") {
-          setListing((l) => ({ ...l, status: "sold" }));
-        }
-      }
-    }, 2000);
+    setPaymentResult(null);
+    try {
+      const { data } = await initiatePayment(id, phone);
+      saveTransaction({
+        id: data.transaction_id,
+        order_tracking_id: data.order_tracking_id,
+        listing_title: listing.title,
+        amount: listing.price,
+        status: "pending",
+      });
+      setPaymentResult({ type: "opened", order_tracking_id: data.order_tracking_id });
+      window.open(data.redirect_url, "_blank");
+    } catch (err) {
+      setPaymentResult({ type: "error", message: err.response?.data?.error || "Payment failed" });
+    } finally {
+      setPaying(false);
+    }
   }
 
   async function handleSendMessage(e) {
@@ -89,24 +84,27 @@ export default function ListingDetail() {
 
         {!isOwnListing && listing.status === "available" && (
           <div className="mt-6 border-t border-navy-100 pt-4">
-            <h2 className="text-sm font-medium text-navy-700 mb-2">Buy with Mpesa</h2>
-            {!transaction ? (
-              <form onSubmit={handlePay} className="flex gap-2">
-                <input required value={phone} onChange={(e) => setPhone(e.target.value)}
-                  placeholder="2547XXXXXXXX"
-                  className="flex-1 rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
-                <button type="submit" disabled={paying}
-                  className="bg-mustard-500 text-navy-900 font-medium rounded-md px-4 py-2 text-sm hover:bg-mustard-400 transition disabled:opacity-50">
-                  Pay
-                </button>
-              </form>
-            ) : (
-              <p className={`text-sm px-3 py-2 rounded-md ${
-                transaction.status === "success" ? "bg-green-50 text-green-700"
-                : transaction.status === "failed" ? "bg-red-50 text-red-700"
-                : "bg-mustard-400/10 text-navy-600"
-              }`}>
-                {STATUS_LABEL[transaction.status]}
+            <h2 className="text-sm font-medium text-navy-700 mb-2">Buy this item</h2>
+            <form onSubmit={handlePay} className="flex gap-2">
+              <input required value={phone} onChange={(e) => setPhone(e.target.value)}
+                placeholder="2547XXXXXXXX"
+                className="flex-1 rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
+              <button type="submit" disabled={paying}
+                className="bg-mustard-500 text-navy-900 font-medium rounded-md px-4 py-2 text-sm hover:bg-mustard-400 transition disabled:opacity-50">
+                {paying ? "Processing..." : "Buy Now"}
+              </button>
+            </form>
+
+            {paymentResult?.type === "opened" && (
+              <p className="mt-3 text-sm bg-green-50 text-green-700 px-3 py-2 rounded-md">
+                Payment window opened. Complete payment in the new tab.
+                <br />
+                <Link to="/payments" className="underline font-medium">Check payment status</Link>
+              </p>
+            )}
+            {paymentResult?.type === "error" && (
+              <p className="mt-3 text-sm bg-red-50 text-red-700 px-3 py-2 rounded-md">
+                {paymentResult.message}
               </p>
             )}
           </div>

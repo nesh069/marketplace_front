@@ -19,6 +19,7 @@ export default function Navbar() {
         <Link to="/" className="hover:text-mustard-400 transition">Browse</Link>
         <Link to="/post" className="hover:text-mustard-400 transition">Sell an item</Link>
         <Link to="/messages" className="hover:text-mustard-400 transition">Messages</Link>
+        <Link to="/payments" className="hover:text-mustard-400 transition">Payments</Link>
         {user && (
           <button onClick={handleLogout} className="text-navy-100 hover:text-mustard-400 transition">
             Log out
