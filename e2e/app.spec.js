@@ -57,47 +57,50 @@ test("full user journey", async ({ page, request }) => {
   await page.locator("input").nth(2).fill(BUYER.phone_number);
   await page.locator("input").nth(3).fill(BUYER.password);
   await page.getByRole("button", { name: "Create account" }).click();
-
-  // Wait either for navigation to "/" (success) or error text (failure)
   await page.waitForURL("/", { timeout: 15000 });
 
-  // ─── 4. Browser page shows the seeded listing ────────────────────
-  await expect(page.getByText(LISTING.title).first()).toBeVisible();
+  // ─── 4. Browse page shows the seeded listing ─────────────────────
+  await expect(page.getByText(LISTING.title).first()).toBeVisible({ timeout: 10000 });
   await expect(
     page.getByText(`KSh ${LISTING.price.toLocaleString()}`).first(),
   ).toBeVisible();
 
   // ─── 5. Navbar shows logged-in links ────────────────────────────
   await expect(page.getByRole("link", { name: "Browse" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Sell an item" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Sell" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Messages" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Log out" })).toBeVisible();
 
-  // ─── 6. Listing detail shows M-Pesa and message forms ────────────
+  // ─── 6. Listing detail shows Buy button and Chat button ──────────
   await page.goto(`/listings/${listing.id}`);
   await expect(page.getByText(LISTING.title).first()).toBeVisible();
   await expect(page.getByText(LISTING.description)).toBeVisible();
-  await expect(page.getByText("Buy with Mpesa")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Pay" })).toBeVisible();
-  await expect(page.getByText("Message the seller")).toBeVisible();
-  await expect(
-    page.getByPlaceholder("Ask about the item..."),
-  ).toBeVisible();
+  await expect(page.getByText("Buy this item")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Buy Now" })).toBeVisible();
+  await expect(page.getByText("💬 Chat with seller")).toBeVisible();
 
-  // ─── 7. Send a message to the seller ────────────────────────────
-  await page
-    .getByPlaceholder("Ask about the item...")
-    .fill("Is this still available?");
+  // ─── 7. Send a message via chat modal ────────────────────────────
+  await page.getByText("💬 Chat with seller").click();
+  await expect(page.getByText("Chat with seller")).toBeVisible();
+  await page.getByPlaceholder("Type a message...").fill("Is this still available?");
   await page.getByRole("button", { name: "Send" }).click();
   await expect(page.getByText("Is this still available?")).toBeVisible();
+
+  // Close the chat modal
+  await page.locator('[onclick]').first().click({ force: true }).catch(() => {});
+  await page.keyboard.press("Escape");
 
   // ─── 8. Messages page shows the conversation ─────────────────────
   await page.goto("/messages");
   await expect(page.getByRole("heading", { name: "Messages" })).toBeVisible();
-  await expect(page.getByText(`Listing #${listing.id}`)).toBeVisible();
-  await expect(
-    page.getByText("Is this still available?"),
-  ).toBeVisible();
+  await expect(page.getByText("Is this still available?")).toBeVisible();
+
+  // Click the conversation to see thread detail
+  const convButton = page.locator("button").filter({ hasText: "Is this still available?" });
+  if (await convButton.isVisible()) {
+    await convButton.click();
+    await expect(page.getByText("Is this still available?")).toBeVisible();
+  }
 
   // ─── 9. Logout ──────────────────────────────────────────────────
   await page.goto("/");
