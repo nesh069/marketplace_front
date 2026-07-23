@@ -25,6 +25,7 @@ export default function PostListing() {
     setError("");
     setFieldErrors({});
     if (!form.title.trim()) { setError("Please enter a title."); setPosting(false); return; }
+    if (form.title.trim().length < 3) { setError("Title must be at least 3 characters."); setPosting(false); return; }
     if (!form.category) { setFieldErrors((e) => ({ ...e, category: "Please select a category." })); setPosting(false); return; }
     if (!form.price || Number(form.price) < 1) { setFieldErrors((e) => ({ ...e, price: "Price must be at least KSh 1." })); setPosting(false); return; }
     try {

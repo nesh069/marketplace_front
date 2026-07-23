@@ -25,6 +25,7 @@ export default function ChatModal({ listingId, sellerId, onClose }) {
   async function send(e) {
     e.preventDefault();
     if (!text.trim()) return;
+    if (text.length > 2000) return;
     const { data } = await api.post("/messages/", {
       listing: listingId,
       recipient: sellerId,
