@@ -24,6 +24,9 @@ export default function PostListing() {
     setPosting(true);
     setError("");
     setFieldErrors({});
+    if (!form.title.trim()) { setError("Please enter a title."); setPosting(false); return; }
+    if (!form.category) { setFieldErrors((e) => ({ ...e, category: "Please select a category." })); setPosting(false); return; }
+    if (!form.price || Number(form.price) < 1) { setFieldErrors((e) => ({ ...e, price: "Price must be at least KSh 1." })); setPosting(false); return; }
     try {
       const data = new FormData();
       data.append("title", form.title);
@@ -57,7 +60,7 @@ export default function PostListing() {
   return (
     <div className="max-w-md mx-auto px-4 py-8">
       <h1 className="font-display text-xl font-bold text-navy-700 mb-6">Sell an item</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} noValidate className="space-y-4">
         <div>
           <label className="text-sm font-medium text-navy-700">Title</label>
           <input required value={form.title} onChange={(e) => update("title", e.target.value)}
