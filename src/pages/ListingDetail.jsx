@@ -121,7 +121,7 @@ export default function ListingDetail() {
         {listing.image ? (
           <img src={listing.image} alt={listing.title} className="w-full h-64 object-cover rounded-md mt-4" />
         ) : (
-          <div className="w-full h-48 bg-navy-50 dark:bg-navy-700 rounded-md mt-4 flex items-center justify-center text-navy-200 dark:text-navy-200 text-sm">No photo</div>
+          <div className="w-full h-48 bg-navy-50 dark:bg-navy-700 rounded-md mt-4 flex items-center justify-center text-navy-400 dark:text-navy-200 text-sm">No photo</div>
         )}
 
         <p className="text-sm text-navy-600 dark:text-navy-300 mt-4">{listing.description}</p>
@@ -182,7 +182,7 @@ export default function ListingDetail() {
             </select>
             <textarea value={reportDesc} onChange={(e) => setReportDesc(e.target.value)} rows={2} placeholder="Optional details..."
               className="w-full rounded-md border border-navy-100 dark:border-navy-600 dark:bg-navy-700 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
-            <button type="submit" className="text-xs text-red-500 hover:text-red-700 underline">Submit report</button>
+            <button type="submit" className="text-xs text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 underline">Submit report</button>
             {reportMsg && <p className="text-xs text-green-600 dark:text-green-400">{reportMsg}</p>}
           </form>
         </details>

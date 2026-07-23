@@ -31,7 +31,7 @@ export default function Favourites() {
 
       {listings.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-navy-400 text-sm mb-4">No favourites yet.</p>
+          <p className="text-navy-400 dark:text-navy-200 text-sm mb-4">No favourites yet.</p>
           <Link to="/" className="bg-mustard-500 text-navy-900 font-medium rounded-md px-4 py-2 text-sm hover:bg-mustard-400 transition">
             Browse Listings
           </Link>

@@ -73,7 +73,7 @@ export default function PaymentCallback() {
             Back to Listings
           </Link>
           <Link to="/payments"
-            className="border border-navy-300 text-navy-700 rounded-md px-4 py-2 text-sm hover:bg-navy-50 transition">
+            className="border border-navy-300 dark:border-navy-600 text-navy-700 dark:text-navy-200 rounded-md px-4 py-2 text-sm hover:bg-navy-50 dark:hover:bg-navy-700 transition">
             My Payments
           </Link>
         </div>

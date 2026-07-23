@@ -56,7 +56,7 @@ export default function SellerProfile() {
   }
 
   if (!seller) {
-    return <p className="max-w-5xl mx-auto px-4 py-8 text-navy-400 text-sm">Seller not found.</p>;
+    return <p className="max-w-5xl mx-auto px-4 py-8 text-navy-400 dark:text-navy-200 text-sm">Seller not found.</p>;
   }
 
   return (
@@ -75,7 +75,7 @@ export default function SellerProfile() {
       <h2 className="font-display text-sm font-bold text-navy-500 dark:text-navy-200 mb-3">Listings by this seller</h2>
 
       {listings.length === 0 ? (
-        <p className="text-navy-400 text-sm">No listings yet.</p>
+        <p className="text-navy-400 dark:text-navy-200 text-sm">No listings yet.</p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {listings.map((l) => <ListingCard key={l.id} listing={l} />)}
@@ -83,7 +83,7 @@ export default function SellerProfile() {
       )}
 
       <div className="mt-8">
-        <Link to="/" className="text-sm text-navy-500 hover:text-navy-700 underline underline-offset-2">&larr; Back to Browse</Link>
+        <Link to="/" className="text-sm text-navy-500 dark:text-navy-200 hover:text-navy-700 dark:hover:text-navy-100 underline underline-offset-2">&larr; Back to Browse</Link>
       </div>
     </div>
   );
