@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import api from "../api/client";
 import ListingCard from "../components/ListingCard";
 import { CardSkeleton } from "../components/Skeleton";
@@ -12,14 +12,13 @@ export default function Listings() {
   const [maxPrice, setMaxPrice] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const pollRef = useRef(null);
   const [showFilters, setShowFilters] = useState(false);
   const [recentlyViewed] = useState(() => {
     try { return JSON.parse(localStorage.getItem("recentlyViewed") || "[]").slice(0, 4); }
     catch { return []; }
   });
 
-  function fetchListings() {
+  const fetchListings = useCallback(() => {
     const params = {};
     if (search) params.search = search;
     if (category) params.category = category;
@@ -29,19 +28,19 @@ export default function Listings() {
       .then((res) => setListings(res.data.results || res.data))
       .catch(() => setError("Could not load listings."))
       .finally(() => setLoading(false));
-  }
+  }, [search, category, minPrice, maxPrice]);
 
   useEffect(() => {
     setLoading(true);
     setError("");
     fetchListings();
-  }, [search, category, minPrice, maxPrice]);
+  }, [fetchListings]);
 
   useEffect(() => {
     api.get("/categories/").then((res) => setCategories(res.data.results || res.data));
-    pollRef.current = setInterval(fetchListings, 15000);
-    return () => clearInterval(pollRef.current);
-  }, []);
+    const id = setInterval(fetchListings, 15000);
+    return () => clearInterval(id);
+  }, [fetchListings]);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-6">
