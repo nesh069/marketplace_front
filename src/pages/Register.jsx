@@ -29,7 +29,7 @@ export default function Register() {
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <h1 className="font-display text-2xl font-bold text-navy-700 mb-1">Create your account</h1>
-        <p className="text-navy-400 text-sm mb-6">Use your student email so buyers know you're verified.</p>
+        <p className="text-navy-400 text-sm mb-6">Use your student email so buyers know you&apos;re verified.</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -37,7 +37,7 @@ export default function Register() {
             <input type="email" required value={form.email}
               onChange={(e) => update("email", e.target.value)}
               className="mt-1 w-full rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500"
-              placeholder="you@moringaschool.com" />
+              placeholder="student@example.edu" />
           </div>
           <div>
             <label className="text-sm font-medium text-navy-700">Username</label>
@@ -51,7 +51,7 @@ export default function Register() {
               onChange={(e) => update("phone_number", e.target.value)}
               placeholder="2547XXXXXXXX"
               className="mt-1 w-full rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
-            <p className="text-xs text-navy-400 mt-1">Used later for Mpesa payments when you buy something.</p>
+            <p className="text-xs text-navy-400 mt-1">Used for payment processing when you buy something.</p>
           </div>
           <div>
             <label className="text-sm font-medium text-navy-700">Password</label>

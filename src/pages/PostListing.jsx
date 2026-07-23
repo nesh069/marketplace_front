@@ -4,8 +4,10 @@ import api from "../api/client";
 
 export default function PostListing() {
   const [categories, setCategories] = useState([]);
-  const [form, setForm] = useState({ title: "", description: "", price: "", category: "" });
+  const [form, setForm] = useState({ title: "", description: "", price: "", category: "", image: null });
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [posting, setPosting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,16 +16,41 @@ export default function PostListing() {
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
+    setFieldErrors((e) => ({ ...e, [field]: "" }));
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setPosting(true);
     setError("");
+    setFieldErrors({});
     try {
-      const { data } = await api.post("/listings/", form);
-      navigate(`/listings/${data.id}`);
-    } catch {
-      setError("Couldn't post that listing - check the details and try again.");
+      const data = new FormData();
+      data.append("title", form.title);
+      data.append("description", form.description);
+      data.append("price", form.price);
+      data.append("category", form.category);
+      if (form.image) data.append("image", form.image);
+
+      const { data: result } = await api.post("/listings/", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      navigate(`/listings/${result.id}`);
+    } catch (err) {
+      const resp = err.response?.data;
+      if (resp && typeof resp === "object") {
+        const firstFieldError = Object.entries(resp).find(([, v]) => Array.isArray(v));
+        if (firstFieldError) {
+          const [field, msgs] = firstFieldError;
+          setFieldErrors((e) => ({ ...e, [field]: msgs[0] }));
+        } else {
+          setError(Object.values(resp).flat().join(", "));
+        }
+      } else {
+        setError("Couldn't post that listing. Try again.");
+      }
+    } finally {
+      setPosting(false);
     }
   }
 
@@ -34,22 +61,25 @@ export default function PostListing() {
         <div>
           <label className="text-sm font-medium text-navy-700">Title</label>
           <input required value={form.title} onChange={(e) => update("title", e.target.value)}
-            className="mt-1 w-full rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500"
+            className={`mt-1 w-full rounded-md border ${fieldErrors.title ? "border-red-400" : "border-navy-100"} px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500`}
             placeholder="e.g. Calculus textbook, 3rd edition" />
+          {fieldErrors.title && <p className="text-xs text-red-500 mt-1">{fieldErrors.title}</p>}
         </div>
         <div>
           <label className="text-sm font-medium text-navy-700">Category</label>
           <select required value={form.category} onChange={(e) => update("category", e.target.value)}
-            className="mt-1 w-full rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500">
+            className={`mt-1 w-full rounded-md border ${fieldErrors.category ? "border-red-400" : "border-navy-100"} px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500`}>
             <option value="">Choose a category</option>
             {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
+          {fieldErrors.category && <p className="text-xs text-red-500 mt-1">{fieldErrors.category}</p>}
         </div>
         <div>
           <label className="text-sm font-medium text-navy-700">Price (KSh)</label>
           <input required type="number" min="0" step="1" value={form.price}
             onChange={(e) => update("price", e.target.value)}
-            className="mt-1 w-full rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
+            className={`mt-1 w-full rounded-md border ${fieldErrors.price ? "border-red-400" : "border-navy-100"} px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500`} />
+          {fieldErrors.price && <p className="text-xs text-red-500 mt-1">{fieldErrors.price}</p>}
         </div>
         <div>
           <label className="text-sm font-medium text-navy-700">Description</label>
@@ -57,9 +87,16 @@ export default function PostListing() {
             className="mt-1 w-full rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500"
             placeholder="Condition, why you're selling, anything a buyer should know" />
         </div>
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <button type="submit" className="w-full bg-navy-600 text-white rounded-md py-2 text-sm font-medium hover:bg-navy-700 transition">
-          Post listing
+        <div>
+          <label className="text-sm font-medium text-navy-700">Photo (optional)</label>
+          <input type="file" accept="image/*"
+            onChange={(e) => update("image", e.target.files[0] || null)}
+            className="mt-1 w-full text-sm text-navy-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-navy-100 file:text-navy-700 hover:file:bg-navy-200" />
+        </div>
+        {error && <p className="text-sm bg-red-50 text-red-700 px-3 py-2 rounded-md border border-red-200">{error}</p>}
+        <button type="submit" disabled={posting}
+          className="w-full bg-navy-600 text-white rounded-md py-2 text-sm font-medium hover:bg-navy-700 transition disabled:opacity-50">
+          {posting ? "Posting..." : "Post listing"}
         </button>
       </form>
     </div>
