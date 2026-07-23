@@ -188,7 +188,7 @@ export default function ListingDetail() {
         </details>
       </div>
 
-      {chatOpen && <ChatModal listingId={id} sellerEmail={listing.seller} onClose={() => setChatOpen(false)} />}
+      {chatOpen && <ChatModal listingId={id} sellerId={listing.seller_id} onClose={() => setChatOpen(false)} />}
     </div>
   );
 }

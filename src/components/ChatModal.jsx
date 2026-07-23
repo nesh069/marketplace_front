@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import api from "../api/client";
 import { useAuth } from "../context/AuthContext";
 
-export default function ChatModal({ listingId, sellerEmail, onClose }) {
+export default function ChatModal({ listingId, sellerId, onClose }) {
   const { user } = useAuth();
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
@@ -27,7 +27,7 @@ export default function ChatModal({ listingId, sellerEmail, onClose }) {
     if (!text.trim()) return;
     const { data } = await api.post("/messages/", {
       listing: listingId,
-      recipient: sellerEmail,
+      recipient: sellerId,
       body: text,
     });
     setMessages((m) => [...m, data]);

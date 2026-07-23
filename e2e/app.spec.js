@@ -80,15 +80,11 @@ test("full user journey", async ({ page, request }) => {
   await expect(page.getByText("💬 Chat with seller")).toBeVisible();
 
   // ─── 7. Send a message via chat modal ────────────────────────────
-  await page.getByText("💬 Chat with seller").click();
-  await expect(page.getByText("Chat with seller")).toBeVisible();
+  await page.getByRole("button", { name: "💬 Chat with seller" }).click();
+  await expect(page.getByRole("heading", { name: "Chat with seller" })).toBeVisible();
   await page.getByPlaceholder("Type a message...").fill("Is this still available?");
   await page.getByRole("button", { name: "Send" }).click();
   await expect(page.getByText("Is this still available?")).toBeVisible();
-
-  // Close the chat modal
-  await page.locator('[onclick]').first().click({ force: true }).catch(() => {});
-  await page.keyboard.press("Escape");
 
   // ─── 8. Messages page shows the conversation ─────────────────────
   await page.goto("/messages");
