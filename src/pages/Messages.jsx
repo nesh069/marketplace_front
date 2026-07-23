@@ -61,7 +61,7 @@ export default function Messages() {
   const threadList = Object.entries(byListing)
     .map(([listingId, msgs]) => {
       const last = msgs[msgs.length - 1];
-      const otherParty = last.sender === user?.email ? last.recipient : last.sender;
+      const otherParty = last.sender === user?.email ? last.recipient_email : last.sender;
       const otherName = otherParty.split("@")[0];
       const unread = msgs.filter((m) => !m.is_read && m.sender !== user?.email).length;
       const preview = last.body.length > 60 ? last.body.slice(0, 60) + "…" : last.body;
@@ -114,7 +114,7 @@ export default function Messages() {
               </div>
               <div>
                 <p className="text-sm font-medium text-navy-700 dark:text-navy-200">{selectedThread.otherName}</p>
-                <Link to={`/listings/${selectedThread.listingId}`} className="text-xs text-navy-400 dark:text-navy-500 hover:underline">Listing #{selectedThread.listingId}</Link>
+                <Link to={`/listings/${selectedThread.listingId}`} className="text-xs text-navy-400 dark:text-navy-500 hover:underline">{selectedThread.last.listing_title || `Listing #${selectedThread.listingId}`}</Link>
               </div>
             </div>
 
@@ -150,7 +150,10 @@ export default function Messages() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-sm font-medium text-navy-700 dark:text-navy-200 truncate">{t.otherName}</p>
-                  <span className="text-xs text-navy-400 dark:text-navy-500 shrink-0">{timeAgo(t.last.created_at)}</span>
+                  <div className="text-right">
+                    <p className="text-xs text-navy-400 dark:text-navy-500">{timeAgo(t.last.created_at)}</p>
+                    <p className="text-[10px] text-navy-400 dark:text-navy-500">{t.last.listing_title || `Listing #${t.listingId}`}</p>
+                  </div>
                 </div>
                 <p className="text-sm text-navy-500 dark:text-navy-400 truncate mt-0.5">{t.preview}</p>
               </div>
