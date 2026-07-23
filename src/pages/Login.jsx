@@ -12,6 +12,8 @@ export default function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
+    if (!email.trim()) { setError("Please enter your email."); return; }
+    if (!password) { setError("Please enter your password."); return; }
     try {
       await login(email, password);
       navigate("/");

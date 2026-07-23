@@ -15,12 +15,18 @@ export default function Register() {
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
+    if (!form.email.trim()) { setError("Please enter your email."); return; }
+    if (!form.username.trim()) { setError("Please enter a username."); return; }
+    if (!form.phone_number.trim()) { setError("Please enter your phone number."); return; }
+    if (form.phone_number.length < 10) { setError("Phone number must be at least 10 digits."); return; }
+    if (!form.password) { setError("Please enter a password."); return; }
+    if (form.password.length < 8) { setError("Password must be at least 8 characters."); return; }
     try {
       await register(form);
       navigate("/");
     } catch (err) {
       const data = err.response?.data;
-      const firstError = data ? Object.values(data)[0]?.[0] : null;
+      const firstError = data ? Object.values(data).flat().join(". ") : null;
       setError(firstError || "Something went wrong creating your account.");
     }
   }
