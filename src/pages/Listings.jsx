@@ -64,7 +64,7 @@ export default function Listings() {
           <input type="number" min="0" value={minPrice} onChange={(e) => setMinPrice(e.target.value)}
             placeholder="Min KSh"
             className="w-32 rounded-md border border-navy-100 dark:border-navy-600 dark:bg-navy-700 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
-          <span className="self-center text-navy-400 text-sm">&ndash;</span>
+          <span className="self-center text-navy-400 dark:text-navy-200 text-sm">&ndash;</span>
           <input type="number" min="0" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)}
             placeholder="Max KSh"
             className="w-32 rounded-md border border-navy-100 dark:border-navy-600 dark:bg-navy-700 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />

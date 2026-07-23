@@ -40,14 +40,14 @@ export default function ChatModal({ listingId, sellerId, onClose }) {
       <div className="relative bg-white dark:bg-navy-800 rounded-t-xl sm:rounded-xl shadow-xl w-full sm:w-96 sm:mb-0 max-h-[70vh] flex flex-col">
         <div className="flex items-center justify-between px-4 py-3 border-b border-navy-100 dark:border-navy-600">
           <h3 className="text-sm font-medium text-navy-700 dark:text-navy-200">Chat with seller</h3>
-          <button onClick={onClose} className="text-navy-400 hover:text-navy-600 dark:hover:text-navy-200 text-lg leading-none">&times;</button>
+          <button onClick={onClose} className="text-navy-400 dark:text-navy-200 hover:text-navy-600 dark:hover:text-navy-100 text-lg leading-none">&times;</button>
         </div>
 
         <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 min-h-[200px]">
           {loading ? (
-            <p className="text-xs text-navy-400 text-center">Loading messages...</p>
+            <p className="text-xs text-navy-400 dark:text-navy-200 text-center">Loading messages...</p>
           ) : messages.length === 0 ? (
-            <p className="text-xs text-navy-400 text-center">No messages yet. Start the conversation!</p>
+            <p className="text-xs text-navy-400 dark:text-navy-200 text-center">No messages yet. Start the conversation!</p>
           ) : (
             messages.map((m) => {
               const isMe = m.sender === user?.email;
