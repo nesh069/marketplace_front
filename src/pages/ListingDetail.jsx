@@ -39,10 +39,14 @@ export default function ListingDetail() {
 
   async function handlePay(e) {
     e.preventDefault();
-    setPaying(true);
     setPaymentResult(null);
+    if (!/^2547\d{8}$/.test(phone.trim())) {
+      setPaymentResult({ type: "error", message: "Phone must be 2547XXXXXXXX (e.g. 254712345678)." });
+      return;
+    }
+    setPaying(true);
     try {
-      const { data } = await initiatePayment(id, phone);
+      const { data } = await initiatePayment(id, phone.trim());
       saveTransaction({
         id: data.transaction_id,
         order_tracking_id: data.order_tracking_id,
