@@ -40,8 +40,9 @@ export default function ListingDetail() {
   async function handlePay(e) {
     e.preventDefault();
     setPaymentResult(null);
-    if (!/^2547\d{8}$/.test(phone.trim())) {
-      setPaymentResult({ type: "error", message: "Phone must be 2547XXXXXXXX (e.g. 254712345678)." });
+    const phoneClean = phone.trim();
+    if (!/^(07\d{8}|01\d{8}|254[17]\d{8}|\+254[17]\d{8})$/.test(phoneClean)) {
+      setPaymentResult({ type: "error", message: "Enter a valid Kenyan phone: 07XXXXXXXX, 01XXXXXXXX, or 2547XXXXXXXX." });
       return;
     }
     setPaying(true);
@@ -143,7 +144,7 @@ export default function ListingDetail() {
             <h2 className="text-sm font-medium text-navy-700 dark:text-navy-200 mb-2">Buy this item</h2>
             <form onSubmit={handlePay} className="flex gap-2">
               <input required value={phone} onChange={(e) => setPhone(e.target.value)}
-                placeholder="2547XXXXXXXX"
+                placeholder="07XXXXXXXX or 2547XXXXXXXX"
                 className="flex-1 rounded-md border border-navy-100 dark:border-navy-600 dark:bg-navy-700 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
               <button type="submit" disabled={paying}
                 className="bg-mustard-500 text-navy-900 font-medium rounded-md px-4 py-2 text-sm hover:bg-mustard-400 transition disabled:opacity-50">
