@@ -24,6 +24,13 @@ const STATUS_DISPLAY = {
     color: "bg-yellow-50 text-yellow-700 border-yellow-200",
     iconBg: "bg-yellow-100 text-yellow-600",
   },
+  unknown: {
+    icon: "?",
+    title: "Payment Status Unknown",
+    message: "We couldn't determine the payment status. Check your payments page.",
+    color: "bg-gray-50 text-gray-700 border-gray-200",
+    iconBg: "bg-gray-100 text-gray-600",
+  },
 };
 
 export default function PaymentCallback() {
@@ -31,8 +38,13 @@ export default function PaymentCallback() {
   const [display, setDisplay] = useState(null);
 
   useEffect(() => {
-    const status = searchParams.get("status") || "pending";
-    const orderId = searchParams.get("order");
+    const status = searchParams.get("status") || "";
+    const orderId = searchParams.get("order") || "";
+
+    if (!status) {
+      setDisplay(STATUS_DISPLAY.unknown);
+      return;
+    }
 
     if (status === "success") {
       const txs = getSavedTransactions();
@@ -42,7 +54,7 @@ export default function PaymentCallback() {
       }
     }
 
-    setDisplay(STATUS_DISPLAY[status] || STATUS_DISPLAY.pending);
+    setDisplay(STATUS_DISPLAY[status] || STATUS_DISPLAY.unknown);
   }, [searchParams]);
 
   if (!display) return null;

@@ -37,7 +37,7 @@ export default function Register() {
             <input type="email" required value={form.email}
               onChange={(e) => update("email", e.target.value)}
               className="mt-1 w-full rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500"
-              placeholder="you@moringaschool.com" />
+              placeholder="student@example.edu" />
           </div>
           <div>
             <label className="text-sm font-medium text-navy-700">Username</label>
@@ -51,7 +51,7 @@ export default function Register() {
               onChange={(e) => update("phone_number", e.target.value)}
               placeholder="2547XXXXXXXX"
               className="mt-1 w-full rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
-            <p className="text-xs text-navy-400 mt-1">Used later for Mpesa payments when you buy something.</p>
+            <p className="text-xs text-navy-400 mt-1">Used for payment processing when you buy something.</p>
           </div>
           <div>
             <label className="text-sm font-medium text-navy-700">Password</label>

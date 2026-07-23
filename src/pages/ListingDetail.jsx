@@ -74,6 +74,14 @@ export default function ListingDetail() {
             KSh {Number(listing.price).toLocaleString()}
           </p>
         </div>
+        {listing.image && (
+          <img src={listing.image} alt={listing.title} className="w-full h-64 object-cover rounded-md mt-4" />
+        )}
+        {!listing.image && (
+          <div className="w-full h-48 bg-navy-50 rounded-md mt-4 flex items-center justify-center text-navy-200 text-sm">
+            No photo
+          </div>
+        )}
         <p className="text-sm text-navy-600 mt-4">{listing.description}</p>
 
         {listing.status === "sold" && (

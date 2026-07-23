@@ -33,7 +33,7 @@ export default function Login() {
               type="email" required value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="mt-1 w-full rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500"
-              placeholder="you@moringaschool.com"
+              placeholder="student@example.edu"
             />
           </div>
           <div>
