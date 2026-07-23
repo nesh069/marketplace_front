@@ -56,8 +56,8 @@ export default function ListingCard({ listing }) {
       </button>
       <div className="p-3">
         <h3 className="font-medium text-sm text-navy-700 dark:text-navy-200 truncate">{listing.title}</h3>
-        <p className="text-xs text-navy-400 dark:text-navy-500 mt-0.5">{categoryName}</p>
-        <p className="font-display font-bold text-mustard-600 dark:text-mustard-400 mt-1">
+        <p className="text-xs text-navy-400 dark:text-navy-200 mt-0.5">{categoryName}</p>
+        <p className="font-display font-bold text-mustard-700 dark:text-mustard-400 mt-1">
           KSh {Number(listing.price).toLocaleString()}
         </p>
         {listing.status === "sold" && (

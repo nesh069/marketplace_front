@@ -26,7 +26,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center px-4 dark:bg-navy-900 transition-colors">
       <div className="w-full max-w-sm">
         <h1 className="font-display text-2xl font-bold text-navy-700 dark:text-navy-100 mb-1">Campus Marketplace</h1>
-        <p className="text-navy-500 dark:text-navy-400 text-sm mb-6">Log in with your student email.</p>
+        <p className="text-navy-500 dark:text-navy-200 text-sm mb-6">Log in with your student email.</p>
 
         <form onSubmit={handleSubmit} noValidate className="space-y-4">
           <div>
@@ -52,7 +52,7 @@ export default function Login() {
           </button>
         </form>
 
-        <p className="text-sm text-navy-400 dark:text-navy-500 mt-4">
+        <p className="text-sm text-navy-400 dark:text-navy-200 mt-4">
           New here?{" "}
           <Link to="/register" className="text-navy-600 dark:text-mustard-400 font-medium underline">Create an account</Link>
         </p>

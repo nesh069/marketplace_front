@@ -59,7 +59,7 @@ export default function ChatModal({ listingId, sellerId, onClose }) {
                       : "bg-navy-50 dark:bg-navy-700 text-navy-700 dark:text-navy-200"
                   }`}>
                     <p>{m.body}</p>
-                    <p className={`text-[10px] mt-0.5 ${isMe ? "text-navy-700" : "text-navy-400 dark:text-navy-500"}`}>
+                    <p className={`text-[10px] mt-0.5 ${isMe ? "text-navy-700" : "text-navy-400 dark:text-navy-200"}`}>
                       {m.sender === user?.email ? "You" : m.sender.split("@")[0]}
                     </p>
                   </div>

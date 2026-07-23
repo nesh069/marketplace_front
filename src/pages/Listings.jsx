@@ -54,7 +54,7 @@ export default function Listings() {
           {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
         <button onClick={() => setShowFilters(!showFilters)}
-          className="text-sm text-navy-500 dark:text-navy-400 hover:text-navy-700 self-center underline underline-offset-2">
+          className="text-sm text-navy-500 dark:text-navy-200 hover:text-navy-700 self-center underline underline-offset-2">
           {showFilters ? "Hide" : "Price"} filter
         </button>
       </div>
@@ -83,7 +83,7 @@ export default function Listings() {
           {Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />)}
         </div>
       ) : listings.length === 0 && !error ? (
-        <p className="text-navy-400 dark:text-navy-500 text-sm">Nothing here yet. Be the first to post something.</p>
+        <p className="text-navy-400 dark:text-navy-200 text-sm">Nothing here yet. Be the first to post something.</p>
       ) : (
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -92,7 +92,7 @@ export default function Listings() {
 
           {recentlyViewed.length > 0 && (
             <div className="mt-10">
-              <h2 className="font-display text-sm font-bold text-navy-500 dark:text-navy-400 mb-3">Recently viewed</h2>
+              <h2 className="font-display text-sm font-bold text-navy-500 dark:text-navy-200 mb-3">Recently viewed</h2>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {recentlyViewed.map((l) => <ListingCard key={`rv-${l.id}`} listing={l} />)}
               </div>
