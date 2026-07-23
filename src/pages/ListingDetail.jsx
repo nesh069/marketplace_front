@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../api/client";
 import ChatModal from "../components/ChatModal";
@@ -22,15 +22,12 @@ export default function ListingDetail() {
   const [phone, setPhone] = useState("");
   const [paying, setPaying] = useState(false);
   const [paymentResult, setPaymentResult] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [messageText, setMessageText] = useState("");
   const [chatOpen, setChatOpen] = useState(false);
   const [faved, setFaved] = useState(false);
   const [reportReason, setReportReason] = useState("");
   const [reportDesc, setReportDesc] = useState("");
   const [reportMsg, setReportMsg] = useState("");
   const [soldMsg, setSoldMsg] = useState("");
-  const pollRef = useRef(null);
 
   useEffect(() => {
     api.get(`/listings/${id}/`).then((res) => {
@@ -38,11 +35,6 @@ export default function ListingDetail() {
       setFaved(res.data.is_favourited);
       addRecentlyViewed(res.data);
     });
-    api.get("/messages/").then((res) => {
-      const all = res.data.results || res.data;
-      setMessages(all.filter((m) => String(m.listing) === String(id)));
-    });
-    return () => clearInterval(pollRef.current);
   }, [id]);
 
   async function handlePay(e) {
@@ -65,18 +57,6 @@ export default function ListingDetail() {
     } finally {
       setPaying(false);
     }
-  }
-
-  async function handleSendMessage(e) {
-    e.preventDefault();
-    if (!messageText.trim()) return;
-    const { data } = await api.post("/messages/", {
-      listing: id,
-      recipient: listing.seller_id || listing.seller,
-      body: messageText,
-    });
-    setMessages((m) => [...m, data]);
-    setMessageText("");
   }
 
   async function toggleFav() {
