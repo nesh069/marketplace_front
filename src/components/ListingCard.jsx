@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/client";
+import { useAuth } from "../context/AuthContext";
 
 const CATEGORY_EMOJI = {
   Phones: "📱", Laptops: "💻", Books: "📚",
@@ -17,10 +18,12 @@ const CATEGORY_COLORS = {
 };
 
 export default function ListingCard({ listing }) {
+  const { user } = useAuth();
   const categoryName = listing.category_name || "";
   const emoji = CATEGORY_EMOJI[categoryName] || "📦";
   const gradient = CATEGORY_COLORS[categoryName] || "from-gray-200 to-slate-300";
   const [faved, setFaved] = useState(listing.is_favourited);
+  const isOwnListing = user?.email === listing.seller;
 
   async function toggleFav(e) {
     e.preventDefault();
@@ -50,10 +53,12 @@ export default function ListingCard({ listing }) {
           <span className="text-5xl">{emoji}</span>
         )}
       </div>
-      <button onClick={toggleFav}
-        className="absolute top-2 right-2 w-8 h-8 bg-white/80 dark:bg-navy-900/80 rounded-full flex items-center justify-center text-sm hover:scale-110 transition">
-        {faved ? "❤️" : "🤍"}
-      </button>
+      {!isOwnListing && (
+        <button onClick={toggleFav}
+          className="absolute top-2 right-2 w-8 h-8 bg-white/80 dark:bg-navy-900/80 rounded-full flex items-center justify-center text-sm hover:scale-110 transition">
+          {faved ? "❤️" : "🤍"}
+        </button>
+      )}
       <div className="p-3">
         <h3 className="font-medium text-sm text-navy-700 dark:text-navy-200 truncate">{listing.title}</h3>
         <p className="text-xs text-navy-400 dark:text-navy-200 mt-0.5">{categoryName}</p>
