@@ -26,48 +26,48 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 dark:bg-navy-900 transition-colors">
       <div className="w-full max-w-sm">
-        <h1 className="font-display text-2xl font-bold text-navy-700 mb-1">Create your account</h1>
-        <p className="text-navy-400 text-sm mb-6">Use your student email so buyers know you&apos;re verified.</p>
+        <h1 className="font-display text-2xl font-bold text-navy-700 dark:text-navy-100 mb-1">Create your account</h1>
+        <p className="text-navy-500 dark:text-navy-400 text-sm mb-6">Use your student email so buyers know you&apos;re verified.</p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} noValidate className="space-y-4">
           <div>
-            <label className="text-sm font-medium text-navy-700">Student email</label>
+            <label className="text-sm font-medium text-navy-700 dark:text-navy-200">Student email</label>
             <input type="email" required value={form.email}
               onChange={(e) => update("email", e.target.value)}
-              className="mt-1 w-full rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500"
+              className="mt-1 w-full rounded-md border border-navy-200 dark:border-navy-600 dark:bg-navy-800 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500"
               placeholder="student@example.edu" />
           </div>
           <div>
-            <label className="text-sm font-medium text-navy-700">Username</label>
+            <label className="text-sm font-medium text-navy-700 dark:text-navy-200">Username</label>
             <input required value={form.username}
               onChange={(e) => update("username", e.target.value)}
-              className="mt-1 w-full rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
+              className="mt-1 w-full rounded-md border border-navy-200 dark:border-navy-600 dark:bg-navy-800 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
           </div>
           <div>
-            <label className="text-sm font-medium text-navy-700">Phone number</label>
+            <label className="text-sm font-medium text-navy-700 dark:text-navy-200">Phone number</label>
             <input required value={form.phone_number}
               onChange={(e) => update("phone_number", e.target.value)}
               placeholder="2547XXXXXXXX"
-              className="mt-1 w-full rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
-            <p className="text-xs text-navy-400 mt-1">Used for payment processing when you buy something.</p>
+              className="mt-1 w-full rounded-md border border-navy-200 dark:border-navy-600 dark:bg-navy-800 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
+            <p className="text-xs text-navy-500 dark:text-navy-400 mt-1">Used for payment processing when you buy something.</p>
           </div>
           <div>
-            <label className="text-sm font-medium text-navy-700">Password</label>
+            <label className="text-sm font-medium text-navy-700 dark:text-navy-200">Password</label>
             <input type="password" required minLength={8} value={form.password}
               onChange={(e) => update("password", e.target.value)}
-              className="mt-1 w-full rounded-md border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
+              className="mt-1 w-full rounded-md border border-navy-200 dark:border-navy-600 dark:bg-navy-800 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
           </div>
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          <button type="submit" className="w-full bg-navy-600 text-white rounded-md py-2 text-sm font-medium hover:bg-navy-700 transition">
+          {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+          <button type="submit" className="w-full bg-navy-600 dark:bg-navy-700 text-white rounded-md py-2 text-sm font-medium hover:bg-navy-700 dark:hover:bg-navy-600 transition">
             Create account
           </button>
         </form>
 
-        <p className="text-sm text-navy-400 mt-4">
+        <p className="text-sm text-navy-500 dark:text-navy-400 mt-4">
           Already have an account?{" "}
-          <Link to="/login" className="text-navy-600 font-medium underline">Log in</Link>
+          <Link to="/login" className="text-navy-600 dark:text-mustard-400 font-medium underline">Log in</Link>
         </p>
       </div>
     </div>
