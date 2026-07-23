@@ -99,13 +99,13 @@ export default function Messages() {
 
       {threadList.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-navy-400 dark:text-navy-500 text-sm mb-1">No conversations yet.</p>
-          <p className="text-navy-400 dark:text-navy-500 text-xs">Message a seller from a listing page to start one.</p>
+          <p className="text-navy-400 dark:text-navy-200 text-sm mb-1">No conversations yet.</p>
+          <p className="text-navy-400 dark:text-navy-200 text-xs">Message a seller from a listing page to start one.</p>
         </div>
       ) : selectedThread ? (
         <div>
           <button onClick={() => setSelectedListing(null)}
-            className="text-sm text-navy-500 dark:text-navy-400 hover:text-navy-700 mb-4 underline underline-offset-2">&larr; All conversations</button>
+            className="text-sm text-navy-500 dark:text-navy-200 hover:text-navy-700 mb-4 underline underline-offset-2">&larr; All conversations</button>
 
           <div className="bg-white dark:bg-navy-800 rounded-lg border border-navy-100 dark:border-navy-600">
             <div className="flex items-center gap-3 px-4 py-3 border-b border-navy-100 dark:border-navy-600">
@@ -114,7 +114,7 @@ export default function Messages() {
               </div>
               <div>
                 <p className="text-sm font-medium text-navy-700 dark:text-navy-200">{selectedThread.otherName}</p>
-                <Link to={`/listings/${selectedThread.listingId}`} className="text-xs text-navy-400 dark:text-navy-500 hover:underline">{selectedThread.last.listing_title || `Listing #${selectedThread.listingId}`}</Link>
+                <Link to={`/listings/${selectedThread.listingId}`} className="text-xs text-navy-400 dark:text-navy-200 hover:underline">{selectedThread.last.listing_title || `Listing #${selectedThread.listingId}`}</Link>
               </div>
             </div>
 
@@ -129,7 +129,7 @@ export default function Messages() {
                         : "bg-navy-50 dark:bg-navy-700 text-navy-700 dark:text-navy-200"
                     }`}>
                       <p>{m.body}</p>
-                      <p className={`text-[10px] mt-0.5 ${isMe ? "text-navy-700" : "text-navy-400 dark:text-navy-500"}`}>
+                      <p className={`text-[10px] mt-0.5 ${isMe ? "text-navy-700" : "text-navy-400 dark:text-navy-200"}`}>
                         {timeAgo(m.created_at)}
                       </p>
                     </div>
@@ -151,11 +151,11 @@ export default function Messages() {
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-sm font-medium text-navy-700 dark:text-navy-200 truncate">{t.otherName}</p>
                   <div className="text-right">
-                    <p className="text-xs text-navy-400 dark:text-navy-500">{timeAgo(t.last.created_at)}</p>
-                    <p className="text-[10px] text-navy-400 dark:text-navy-500">{t.last.listing_title || `Listing #${t.listingId}`}</p>
+                    <p className="text-xs text-navy-400 dark:text-navy-200">{timeAgo(t.last.created_at)}</p>
+                    <p className="text-[10px] text-navy-400 dark:text-navy-200">{t.last.listing_title || `Listing #${t.listingId}`}</p>
                   </div>
                 </div>
-                <p className="text-sm text-navy-500 dark:text-navy-400 truncate mt-0.5">{t.preview}</p>
+                <p className="text-sm text-navy-500 dark:text-navy-200 truncate mt-0.5">{t.preview}</p>
               </div>
               {t.unread > 0 && (
                 <span className="bg-mustard-500 text-navy-900 text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center shrink-0">

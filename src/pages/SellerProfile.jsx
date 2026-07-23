@@ -67,12 +67,12 @@ export default function SellerProfile() {
         </div>
         <div>
           <h1 className="font-display text-lg font-bold text-navy-700 dark:text-navy-100">{seller.email}</h1>
-          <p className="text-sm text-navy-400 dark:text-navy-500">Member since {new Date(seller.date_joined).toLocaleDateString()}</p>
-          <p className="text-sm text-navy-400 dark:text-navy-500">{listings.length} item{listings.length !== 1 ? "s" : ""} listed</p>
+          <p className="text-sm text-navy-400 dark:text-navy-200">Member since {new Date(seller.date_joined).toLocaleDateString()}</p>
+          <p className="text-sm text-navy-400 dark:text-navy-200">{listings.length} item{listings.length !== 1 ? "s" : ""} listed</p>
         </div>
       </div>
 
-      <h2 className="font-display text-sm font-bold text-navy-500 dark:text-navy-400 mb-3">Listings by this seller</h2>
+      <h2 className="font-display text-sm font-bold text-navy-500 dark:text-navy-200 mb-3">Listings by this seller</h2>
 
       {listings.length === 0 ? (
         <p className="text-navy-400 text-sm">No listings yet.</p>

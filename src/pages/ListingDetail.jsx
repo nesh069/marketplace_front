@@ -104,7 +104,7 @@ export default function ListingDetail() {
         <div className="flex items-start justify-between">
           <div>
             <h1 className="font-display text-xl font-bold text-navy-700 dark:text-navy-100">{listing.title}</h1>
-            <Link to={`/seller/${listing.seller_id}`} className="text-sm text-navy-400 dark:text-navy-500 hover:text-navy-600 dark:hover:text-navy-300 mt-1 inline-block underline underline-offset-2">
+            <Link to={`/seller/${listing.seller_id}`} className="text-sm text-navy-400 dark:text-navy-200 hover:text-navy-600 dark:hover:text-navy-300 mt-1 inline-block underline underline-offset-2">
               Sold by {listing.seller}
             </Link>
           </div>
@@ -112,7 +112,7 @@ export default function ListingDetail() {
             <button onClick={toggleFav} className="text-xl hover:scale-110 transition" title={faved ? "Remove from wishlist" : "Add to wishlist"}>
               {faved ? "❤️" : "🤍"}
             </button>
-            <p className="font-display text-2xl font-bold text-mustard-600 dark:text-mustard-400">
+            <p className="font-display text-2xl font-bold text-mustard-700 dark:text-mustard-400">
               KSh {Number(listing.price).toLocaleString()}
             </p>
           </div>
@@ -121,7 +121,7 @@ export default function ListingDetail() {
         {listing.image ? (
           <img src={listing.image} alt={listing.title} className="w-full h-64 object-cover rounded-md mt-4" />
         ) : (
-          <div className="w-full h-48 bg-navy-50 dark:bg-navy-700 rounded-md mt-4 flex items-center justify-center text-navy-200 dark:text-navy-500 text-sm">No photo</div>
+          <div className="w-full h-48 bg-navy-50 dark:bg-navy-700 rounded-md mt-4 flex items-center justify-center text-navy-200 dark:text-navy-200 text-sm">No photo</div>
         )}
 
         <p className="text-sm text-navy-600 dark:text-navy-300 mt-4">{listing.description}</p>
@@ -169,7 +169,7 @@ export default function ListingDetail() {
         )}
 
         <details className="mt-4">
-          <summary className="text-xs text-navy-400 dark:text-navy-500 cursor-pointer hover:text-navy-600">Report listing</summary>
+          <summary className="text-xs text-navy-400 dark:text-navy-200 cursor-pointer hover:text-navy-600">Report listing</summary>
           <form onSubmit={handleReport} className="mt-2 space-y-2">
             <select value={reportReason} onChange={(e) => setReportReason(e.target.value)} required
               className="w-full rounded-md border border-navy-100 dark:border-navy-600 dark:bg-navy-700 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500">
