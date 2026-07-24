@@ -35,7 +35,20 @@ export default function MyPayments() {
   }, []);
 
   if (loading) {
-    return <p className="max-w-2xl mx-auto px-4 py-8 text-navy-400 dark:text-navy-200 text-sm">Loading...</p>;
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-8">
+        <h1 className="font-display text-xl font-bold text-navy-700 dark:text-navy-100 mb-6">My Payments</h1>
+        <div className="space-y-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="bg-white dark:bg-navy-800 rounded-lg border border-navy-100 dark:border-navy-600 p-4 animate-pulse space-y-2">
+              <div className="h-4 bg-navy-100 dark:bg-navy-700 rounded w-2/3" />
+              <div className="h-3 bg-navy-100 dark:bg-navy-700 rounded w-1/3" />
+              <div className="h-3 bg-navy-100 dark:bg-navy-700 rounded w-1/4" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (
