@@ -114,9 +114,11 @@ export default function ListingDetail() {
             </Link>
           </div>
           <div className="flex items-start gap-2">
-            <button onClick={toggleFav} className="text-xl hover:scale-110 transition" title={faved ? "Remove from wishlist" : "Add to wishlist"}>
-              {faved ? "❤️" : "🤍"}
-            </button>
+            {user && (
+              <button onClick={toggleFav} className="text-xl hover:scale-110 transition" title={faved ? "Remove from wishlist" : "Add to wishlist"}>
+                {faved ? "❤️" : "🤍"}
+              </button>
+            )}
             <p className="font-display text-2xl font-bold text-mustard-700 dark:text-mustard-400">
               KSh {Number(listing.price).toLocaleString()}
             </p>
@@ -139,59 +141,66 @@ export default function ListingDetail() {
               className="bg-navy-600 text-white rounded-md px-4 py-2 text-sm hover:bg-navy-700 transition">Mark as Sold</button>
             {soldMsg && <p className="text-sm text-green-600 self-center">{soldMsg}</p>}
           </div>
-        ) : (
-          <div className="mt-6 border-t border-navy-100 dark:border-navy-600 pt-4">
-            <h2 className="text-sm font-medium text-navy-700 dark:text-navy-200 mb-2">Buy this item</h2>
-            <form onSubmit={handlePay} className="flex gap-2">
-              <input required value={phone} onChange={(e) => setPhone(e.target.value)}
-                placeholder="07XXXXXXXX or 2547XXXXXXXX"
-                className="flex-1 rounded-md border border-navy-100 dark:border-navy-600 dark:bg-navy-700 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
-              <button type="submit" disabled={paying}
-                className="bg-mustard-500 text-navy-900 font-medium rounded-md px-4 py-2 text-sm hover:bg-mustard-400 transition disabled:opacity-50">
-                {paying ? "Processing..." : "Buy Now"}
+        ) : user ? (
+          <>
+            <div className="mt-6 border-t border-navy-100 dark:border-navy-600 pt-4">
+              <h2 className="text-sm font-medium text-navy-700 dark:text-navy-200 mb-2">Buy this item</h2>
+              <form onSubmit={handlePay} className="flex gap-2">
+                <input required value={phone} onChange={(e) => setPhone(e.target.value)}
+                  placeholder="07XXXXXXXX or 2547XXXXXXXX"
+                  className="flex-1 rounded-md border border-navy-100 dark:border-navy-600 dark:bg-navy-700 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
+                <button type="submit" disabled={paying}
+                  className="bg-mustard-500 text-navy-900 font-medium rounded-md px-4 py-2 text-sm hover:bg-mustard-400 transition disabled:opacity-50">
+                  {paying ? "Processing..." : "Buy Now"}
+                </button>
+              </form>
+              {paymentResult?.type === "opened" && (
+                <p className="mt-3 text-sm bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 px-3 py-2 rounded-md">
+                  Payment window opened.
+                  <br />
+                  <Link to="/payments" className="underline font-medium">Check payment status</Link>
+                </p>
+              )}
+              {paymentResult?.type === "error" && (
+                <p className="mt-3 text-sm bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 px-3 py-2 rounded-md">{paymentResult.message}</p>
+              )}
+            </div>
+
+            <div className="mt-4">
+              <button onClick={() => setChatOpen(true)}
+                className="w-full border border-navy-300 dark:border-navy-500 text-navy-700 dark:text-navy-200 rounded-md py-2 text-sm font-medium hover:bg-navy-50 dark:hover:bg-navy-700 transition">
+                💬 Chat with seller
               </button>
-            </form>
-            {paymentResult?.type === "opened" && (
-              <p className="mt-3 text-sm bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 px-3 py-2 rounded-md">
-                Payment window opened.
-                <br />
-                <Link to="/payments" className="underline font-medium">Check payment status</Link>
-              </p>
-            )}
-            {paymentResult?.type === "error" && (
-              <p className="mt-3 text-sm bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 px-3 py-2 rounded-md">{paymentResult.message}</p>
-            )}
-          </div>
-        )}
+            </div>
 
-        {!isOwnListing && (
-          <div className="mt-4">
-            <button onClick={() => setChatOpen(true)}
-              className="w-full border border-navy-300 dark:border-navy-500 text-navy-700 dark:text-navy-200 rounded-md py-2 text-sm font-medium hover:bg-navy-50 dark:hover:bg-navy-700 transition">
-              💬 Chat with seller
-            </button>
+            <details className="mt-4">
+              <summary className="text-xs text-navy-400 dark:text-navy-200 cursor-pointer hover:text-navy-600">Report listing</summary>
+              <form onSubmit={handleReport} className="mt-2 space-y-2">
+                <select value={reportReason} onChange={(e) => setReportReason(e.target.value)} required
+                  className="w-full rounded-md border border-navy-100 dark:border-navy-600 dark:bg-navy-700 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500">
+                  <option value="">Select a reason</option>
+                  <option value="spam">Spam</option>
+                  <option value="misleading">Misleading</option>
+                  <option value="inappropriate">Inappropriate content</option>
+                  <option value="rule_violation">Violates campus rules</option>
+                  <option value="other">Other</option>
+                </select>
+                <textarea value={reportDesc} onChange={(e) => setReportDesc(e.target.value)} rows={2} placeholder="Optional details..."
+                  className="w-full rounded-md border border-navy-100 dark:border-navy-600 dark:bg-navy-700 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
+                <button type="submit" className="text-xs text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 underline">Submit report</button>
+                {reportMsg && <p className="text-xs text-green-600 dark:text-green-400">{reportMsg}</p>}
+              </form>
+            </details>
+          </>
+        ) : (
+          <div className="mt-6 border-t border-navy-100 dark:border-navy-600 pt-4 text-center">
+            <Link to="/login" className="bg-mustard-500 text-navy-900 font-medium rounded-md px-6 py-2 text-sm hover:bg-mustard-400 transition inline-block">
+              Login to Purchase
+            </Link>
+            <p className="text-xs text-navy-400 dark:text-navy-200 mt-2">
+              <Link to="/register" className="underline">Create an account</Link> to buy, sell, and message sellers.
+            </p>
           </div>
-        )}
-
-        {!isOwnListing && (
-          <details className="mt-4">
-            <summary className="text-xs text-navy-400 dark:text-navy-200 cursor-pointer hover:text-navy-600">Report listing</summary>
-            <form onSubmit={handleReport} className="mt-2 space-y-2">
-              <select value={reportReason} onChange={(e) => setReportReason(e.target.value)} required
-                className="w-full rounded-md border border-navy-100 dark:border-navy-600 dark:bg-navy-700 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500">
-                <option value="">Select a reason</option>
-                <option value="spam">Spam</option>
-                <option value="misleading">Misleading</option>
-                <option value="inappropriate">Inappropriate content</option>
-                <option value="rule_violation">Violates campus rules</option>
-                <option value="other">Other</option>
-              </select>
-              <textarea value={reportDesc} onChange={(e) => setReportDesc(e.target.value)} rows={2} placeholder="Optional details..."
-                className="w-full rounded-md border border-navy-100 dark:border-navy-600 dark:bg-navy-700 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
-              <button type="submit" className="text-xs text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 underline">Submit report</button>
-              {reportMsg && <p className="text-xs text-green-600 dark:text-green-400">{reportMsg}</p>}
-            </form>
-          </details>
         )}
       </div>
 

@@ -41,13 +41,15 @@ test("full user journey", async ({ page, request }) => {
   const listing = await create.json();
   expect(listing.id).toBeTruthy();
 
-  // ─── 1. Unauthenticated user is redirected ──────────────────────
+  // ─── 1. Unauthenticated user sees browse page ────────────────────
   await page.goto("/");
-  await expect(page).toHaveURL("/login");
-  await expect(page.getByText("Campus Marketplace")).toBeVisible();
+  await expect(page.getByText(LISTING.title)).toBeVisible({ timeout: 10000 });
+  await expect(page.getByRole("link", { name: "Login" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Register" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Sell" })).not.toBeVisible();
 
   // ─── 2. Navigate to register ─────────────────────────────────────
-  await page.getByText("Create an account").click();
+  await page.getByRole("link", { name: "Register" }).click();
   await expect(page).toHaveURL("/register");
   await expect(page.getByRole("heading", { name: "Create your account" })).toBeVisible();
 
@@ -103,11 +105,13 @@ test("full user journey", async ({ page, request }) => {
   await page.getByRole("button", { name: "Log out" }).click();
   await expect(page).toHaveURL("/login");
 
-  // ─── 10. Logged-out user is redirected ───────────────────────────
+  // ─── 10. Logged-out user sees browse page (public) ──────────────
   await page.goto("/");
-  await expect(page).toHaveURL("/login");
+  await expect(page.getByText(LISTING.title).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: "Login" })).toBeVisible();
 
   // ─── 11. Login again ────────────────────────────────────────────
+  await page.goto("/login");
   await page.locator("input").nth(0).fill(BUYER.email);
   await page.locator("input").nth(1).fill(BUYER.password);
   await page.getByRole("button", { name: "Log in" }).click();

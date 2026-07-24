@@ -32,12 +32,12 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/payment/callback" element={<PaymentCallback />} />
-            <Route path="/" element={<ProtectedRoute><Layout><Listings /></Layout></ProtectedRoute>} />
-            <Route path="/listings/:id" element={<ProtectedRoute><Layout><ListingDetail /></Layout></ProtectedRoute>} />
+            <Route path="/" element={<Layout><Listings /></Layout>} />
+            <Route path="/listings/:id" element={<Layout><ListingDetail /></Layout>} />
+            <Route path="/seller/:id" element={<Layout><SellerProfile /></Layout>} />
             <Route path="/post" element={<ProtectedRoute><Layout><PostListing /></Layout></ProtectedRoute>} />
             <Route path="/messages" element={<ProtectedRoute><Layout><Messages /></Layout></ProtectedRoute>} />
             <Route path="/payments" element={<ProtectedRoute><Layout><MyPayments /></Layout></ProtectedRoute>} />
-            <Route path="/seller/:id" element={<ProtectedRoute><Layout><SellerProfile /></Layout></ProtectedRoute>} />
             <Route path="/favourites" element={<ProtectedRoute><Layout><Favourites /></Layout></ProtectedRoute>} />
           </Routes>
         </BrowserRouter>

@@ -53,7 +53,7 @@ export default function ListingCard({ listing }) {
           <span className="text-5xl">{emoji}</span>
         )}
       </div>
-      {!isOwnListing && (
+      {user && !isOwnListing && (
         <button onClick={toggleFav}
           className="absolute top-2 right-2 w-8 h-8 bg-white/80 dark:bg-navy-900/80 rounded-full flex items-center justify-center text-sm hover:scale-110 transition">
           {faved ? "❤️" : "🤍"}

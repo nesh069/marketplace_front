@@ -19,19 +19,24 @@ export default function Navbar() {
       </Link>
       <div className="flex items-center gap-3 text-sm">
         <Link to="/" className="hover:text-mustard-400 transition">Browse</Link>
-        <Link to="/post" className="hover:text-mustard-400 transition">Sell</Link>
-        <Link to="/messages" className="hover:text-mustard-400 transition">Messages</Link>
-        <Link to="/payments" className="hover:text-mustard-400 transition">Payments</Link>
-        <Link to="/favourites" className="hover:text-mustard-400 transition hidden sm:inline">Wishlist</Link>
+        {user ? (
+          <>
+            <Link to="/post" className="hover:text-mustard-400 transition">Sell</Link>
+            <Link to="/messages" className="hover:text-mustard-400 transition">Messages</Link>
+            <Link to="/payments" className="hover:text-mustard-400 transition">Payments</Link>
+            <Link to="/favourites" className="hover:text-mustard-400 transition hidden sm:inline">Wishlist</Link>
+            <button onClick={handleLogout} className="text-navy-100 hover:text-mustard-400 transition">Log out</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="hover:text-mustard-400 transition">Login</Link>
+            <Link to="/register" className="hover:text-mustard-400 transition">Register</Link>
+          </>
+        )}
         <button onClick={toggle}
           className="text-navy-100 hover:text-mustard-400 transition text-base leading-none" title="Toggle dark mode">
           {dark ? "☀️" : "🌙"}
         </button>
-        {user && (
-          <button onClick={handleLogout} className="text-navy-100 hover:text-mustard-400 transition">
-            Log out
-          </button>
-        )}
       </div>
     </nav>
   );
