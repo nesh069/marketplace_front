@@ -43,6 +43,7 @@ export default function Messages() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedListing, setSelectedListing] = useState(null);
+  const [replyText, setReplyText] = useState("");
 
   useEffect(() => {
     api.get("/messages/")
@@ -57,6 +58,22 @@ export default function Messages() {
     acc[key].push(m);
     return acc;
   }, {});
+
+  async function sendReply(e) {
+    e.preventDefault();
+    if (!replyText.trim() || !selectedThread) return;
+    try {
+      const { data } = await api.post("/messages/", {
+        listing: selectedThread.listingId,
+        recipient: selectedThread.otherParty,
+        body: replyText.trim(),
+      });
+      setMessages((prev) => [...prev, data]);
+      setReplyText("");
+    } catch {
+      /* ignore */
+    }
+  }
 
   const threadList = Object.entries(byListing)
     .map(([listingId, msgs]) => {
@@ -137,6 +154,15 @@ export default function Messages() {
                 );
               })}
             </div>
+
+            <form onSubmit={sendReply} className="flex gap-2 border-t border-navy-100 dark:border-navy-600 p-3">
+              <input required value={replyText} onChange={(e) => setReplyText(e.target.value)}
+                placeholder="Type a reply…"
+                className="flex-1 rounded-md border border-navy-100 dark:border-navy-600 dark:bg-navy-700 dark:text-navy-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mustard-500" />
+              <button type="submit" className="bg-mustard-500 text-navy-900 font-medium rounded-md px-4 py-2 text-sm hover:bg-mustard-400 transition">
+                Send
+              </button>
+            </form>
           </div>
         </div>
       ) : (

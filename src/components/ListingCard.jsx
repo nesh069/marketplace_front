@@ -1,7 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/client";
 import { useAuth } from "../context/AuthContext";
+
+function loadFavs() {
+  try { return new Set(JSON.parse(localStorage.getItem("favs") || "[]")); }
+  catch { return new Set(); }
+}
+function saveFavs(set) {
+  localStorage.setItem("favs", JSON.stringify([...set]));
+}
 
 const CATEGORY_EMOJI = {
   Phones: "📱", Laptops: "💻", Books: "📚",
@@ -22,8 +30,20 @@ export default function ListingCard({ listing }) {
   const categoryName = listing.category_name || "";
   const emoji = CATEGORY_EMOJI[categoryName] || "📦";
   const gradient = CATEGORY_COLORS[categoryName] || "from-gray-200 to-slate-300";
-  const [faved, setFaved] = useState(listing.is_favourited);
+  const [faved, setFaved] = useState(() => {
+    const stored = loadFavs();
+    return stored.has(listing.id) || listing.is_favourited;
+  });
   const isOwnListing = user?.email === listing.seller;
+
+  useEffect(() => {
+    const stored = loadFavs();
+    if (stored.has(listing.id) !== faved) {
+      if (faved) stored.add(listing.id);
+      else stored.delete(listing.id);
+      saveFavs(stored);
+    }
+  }, [faved, listing.id]);
 
   async function toggleFav(e) {
     e.preventDefault();
@@ -35,7 +55,7 @@ export default function ListingCard({ listing }) {
         const { data } = await api.post("/favorites/", { listing: listing.id });
         listing.favourite_id = data.id;
       }
-      setFaved(!faved);
+      setFaved((prev) => !prev);
     } catch {
       /* ignore */
     }

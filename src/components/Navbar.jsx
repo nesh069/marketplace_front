@@ -24,7 +24,8 @@ export default function Navbar() {
             <Link to="/post" className="hover:text-mustard-400 transition">Sell</Link>
             <Link to="/messages" className="hover:text-mustard-400 transition">Messages</Link>
             <Link to="/payments" className="hover:text-mustard-400 transition">Payments</Link>
-            <Link to="/favourites" className="hover:text-mustard-400 transition hidden sm:inline">Wishlist</Link>
+            <Link to="/favourites" className="hover:text-mustard-400 transition hidden sm:inline" aria-label="Wishlist">Wishlist</Link>
+            <Link to="/profile" className="hover:text-mustard-400 transition">Profile</Link>
             <button onClick={handleLogout} className="text-navy-100 hover:text-mustard-400 transition">Log out</button>
           </>
         ) : (
@@ -34,7 +35,7 @@ export default function Navbar() {
           </>
         )}
         <button onClick={toggle}
-          className="text-navy-100 hover:text-mustard-400 transition text-base leading-none" title="Toggle dark mode">
+          className="text-navy-100 hover:text-mustard-400 transition text-base leading-none" aria-label="Toggle dark mode">
           {dark ? "☀️" : "🌙"}
         </button>
       </div>

@@ -13,6 +13,7 @@ import PaymentCallback from "./pages/PaymentCallback";
 import MyPayments from "./pages/MyPayments";
 import SellerProfile from "./pages/SellerProfile";
 import Favourites from "./pages/Favourites";
+import Profile from "./pages/Profile";
 
 function Layout({ children }) {
   return (
@@ -35,6 +36,7 @@ export default function App() {
             <Route path="/" element={<Layout><Listings /></Layout>} />
             <Route path="/listings/:id" element={<Layout><ListingDetail /></Layout>} />
             <Route path="/seller/:id" element={<Layout><SellerProfile /></Layout>} />
+            <Route path="/profile" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} />
             <Route path="/post" element={<ProtectedRoute><Layout><PostListing /></Layout></ProtectedRoute>} />
             <Route path="/messages" element={<ProtectedRoute><Layout><Messages /></Layout></ProtectedRoute>} />
             <Route path="/payments" element={<ProtectedRoute><Layout><MyPayments /></Layout></ProtectedRoute>} />
